@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ErrorAndExceptionController {
 
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleNullPointers(NullPointerException ex){
+        return ex.getMessage();
+    }
+
     @ExceptionHandler(InvalidRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleInvalidRequest(InvalidRequestException ex){
