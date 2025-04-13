@@ -46,7 +46,7 @@ public class AccountService {
         return authAccount;
     }
 
-    public Account getAccountById(int userId) throws InvalidRequestException{
+    public Account getAccountByIdOrThrow(int userId) throws InvalidRequestException{
         //returns the user found by id otherwise throws exception
         return this.accountRepository.findById(userId).orElseThrow(()->new InvalidRequestException());
     }

@@ -1,11 +1,13 @@
 package com.example.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,11 +64,27 @@ public class SocialMediaController {
     public ResponseEntity<Message> handleCreateMessage(@RequestBody Message message){
 
         //checks if account exists otherwise throws exception inside service method
-        this.accountService.getAccountById(message.getPostedBy());
-        
+        this.accountService.getAccountByIdOrThrow(message.getPostedBy());
+
         //call messageService to create message with the provided request body
         Message createdMessage = this.messageService.createMessage(message);
         
         return ResponseEntity.status(HttpStatus.OK).body(createdMessage);
+    }
+
+    @GetMapping("/messages")
+    public ResponseEntity<List<Message>> getAllMessages(){
+        //call messageService to get a list of all messages
+        List<Message> messages = this.messageService.getAllMessages();
+        
+        return ResponseEntity.status(HttpStatus.OK).body(messages);
+    }
+
+    @GetMapping("/messages/{messageId}")
+    public ResponseEntity<Message> getMessageById(@PathVariable int messageId){
+        //call messageService to get the message by id
+        Message reqMessage = this.messageService.getMessageById(messageId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(reqMessage);
     }
 }
