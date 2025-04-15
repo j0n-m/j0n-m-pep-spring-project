@@ -1,6 +1,8 @@
 package com.example.service;
 
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
+    @Transactional
     public Account registerAccount(Account account) throws DuplicateDataException,InvalidRequestException{
         //check validation on account username and passsword otherwise throws exception (Note: null values are handled in @RestControllerAdvice class)
         if(account.getUsername().isBlank() || account.getPassword().length() < 4){

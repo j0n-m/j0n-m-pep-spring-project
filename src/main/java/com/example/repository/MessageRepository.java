@@ -2,8 +2,6 @@ package com.example.repository;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,13 +17,11 @@ public interface MessageRepository extends JpaRepository<Message,Integer> {
 
     //Directly updates messageText to message by id and returns rows affected
     @Modifying
-    @Transactional
     @Query("UPDATE Message m SET m.messageText = :mText WHERE m.messageId = :mId")
     public int updateMessageTextByMessageId(@Param("mText") String mText, @Param("mId")int mId);
 
     //Directly deletes message row by messageId and returns rows affected
     @Modifying
-    @Transactional
     @Query("DELETE FROM Message m WHERE m.messageId = :messageId")
     public int deleteById(@Param("messageId") int messageId);
 }

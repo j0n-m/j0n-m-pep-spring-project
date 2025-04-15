@@ -3,6 +3,8 @@ package com.example.service;
 import java.time.Instant;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.entity.Message;
@@ -19,6 +21,7 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
+    @Transactional
     public Message createMessage(Message message) throws InvalidRequestException{
         //validate messageText before persisting to the db
         if(message.getMessageText().isBlank() || message.getMessageText().length() > 255){
@@ -45,6 +48,7 @@ public class MessageService {
         return this.messageRepository.findById(messageId).orElse(null);
     }
 
+    @Transactional
     public Integer deleteMessageById(int messageId){
         //checks if message existed to determine the return value
         boolean messageExists = this.messageRepository.existsById(messageId);
@@ -59,6 +63,7 @@ public class MessageService {
         
     }
 
+    @Transactional
     public Integer patchMessageText(Message patchMessage,int messageId) throws InvalidRequestException{
         String messageText = patchMessage.getMessageText();
 
